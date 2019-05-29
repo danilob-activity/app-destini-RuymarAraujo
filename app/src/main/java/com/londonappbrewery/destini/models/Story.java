@@ -1,4 +1,6 @@
-package com.londonappbrewery.destini;
+package com.londonappbrewery.destini.models;
+
+import com.londonappbrewery.destini.models.Answer;
 
 /**
  * Created by danilo on 09/02/18.
