@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.londonappbrewery.destini.models.Answer;
 import com.londonappbrewery.destini.models.Story;
 
+import java.io.Serializable;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -30,16 +32,15 @@ public class MainActivity extends AppCompatActivity {
     Answer mT3_ans2 = new Answer(R.string.T3_Ans2);
     //indice corrente da historia
     private Story mStorySelected;
-    private int mStoryIndex;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(savedInstanceState!=null) {
-            mStoryIndex = savedInstanceState.getInt("StoryKey");
-        }
+
 
         //1° TODO: Faça o link do layout com a activity
 
@@ -61,13 +62,23 @@ public class MainActivity extends AppCompatActivity {
             mT3_ans1.setChildStory(mT6);
             mT3_ans2.setChildStory(mT5);
 
+        if(savedInstanceState!=null) {
+            mStorySelected = (Story) savedInstanceState.getSerializable("StoryKey");
+            mStoryTextView.setText(mStorySelected.getStoryID());
+            if (mStorySelected.getAnswerTop()==null){
+                mAnswerTop.setVisibility(View.GONE);
+                mAnswerBottom.setVisibility(View.GONE);
+            } else {
+                mAnswerTop.setText(mStorySelected.getAnswerTop().getAnswerID());
+                mAnswerBottom.setText(mStorySelected.getAnswerBottom().getAnswerID());
+            }
+        } else {
 
-
-        mStorySelected = mT1;
-        mStoryTextView.setText(mStorySelected.getStoryID());
-        mAnswerTop.setText(mStorySelected.getAnswerTop().getAnswerID());
-        mAnswerBottom.setText(mStorySelected.getAnswerBottom().getAnswerID());
-
+            mStorySelected = mT1;
+            mStoryTextView.setText(mStorySelected.getStoryID());
+            mAnswerTop.setText(mStorySelected.getAnswerTop().getAnswerID());
+            mAnswerBottom.setText(mStorySelected.getAnswerBottom().getAnswerID());
+        }
         mAnswerTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putInt("StoryKey", mStoryIndex);
+        outState.putSerializable("StoryKey",(Serializable) mStorySelected);
 
 
 
