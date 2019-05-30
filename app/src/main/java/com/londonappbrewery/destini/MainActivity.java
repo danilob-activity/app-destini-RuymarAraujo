@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
         mAnswerBottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mStorySelected = mStorySelected.getAnswerTop().getChildStory();
+                mStorySelected = mStorySelected.getAnswerBottom().getChildStory();
                 mStoryTextView.setText(mStorySelected.getStoryID());
-                if (mStorySelected.getAnswerTop()==null){
+                if (mStorySelected.getAnswerBottom()==null){
                     mAnswerTop.setVisibility(View.GONE);
                     mAnswerBottom.setVisibility(View.GONE);
                 } else {
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putInt("StoryKey",mStoryIndex);
+        outState.putInt("StoryKey", mStoryIndex);
 
 
 
