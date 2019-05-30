@@ -2,6 +2,7 @@ package com.londonappbrewery.destini;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -29,12 +30,16 @@ public class MainActivity extends AppCompatActivity {
     Answer mT3_ans2 = new Answer(R.string.T3_Ans2);
     //indice corrente da historia
     private Story mStorySelected;
+    private int mStoryIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(savedInstanceState!=null) {
+            mStoryIndex = savedInstanceState.getInt("StoryKey");
+        }
 
         //1° TODO: Faça o link do layout com a activity
 
@@ -51,14 +56,58 @@ public class MainActivity extends AppCompatActivity {
         mT2.setAnswerBottom(mT2_ans2);
             mT2_ans1.setChildStory(mT3);
             mT2_ans2.setChildStory(mT4);
+        mT3.setAnswerTop(mT3_ans1);
+        mT3.setAnswerBottom(mT3_ans2);
+            mT3_ans1.setChildStory(mT6);
+            mT3_ans2.setChildStory(mT5);
+
 
 
         mStorySelected = mT1;
-        mStoryTextView
+        mStoryTextView.setText(mStorySelected.getStoryID());
+        mAnswerTop.setText(mStorySelected.getAnswerTop().getAnswerID());
+        mAnswerBottom.setText(mStorySelected.getAnswerBottom().getAnswerID());
+
+        mAnswerTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mStorySelected = mStorySelected.getAnswerTop().getChildStory();
+                mStoryTextView.setText(mStorySelected.getStoryID());
+                if (mStorySelected.getAnswerTop()==null){
+                    mAnswerTop.setVisibility(View.GONE);
+                    mAnswerBottom.setVisibility(View.GONE);
+                } else {
+                    mAnswerTop.setText(mStorySelected.getAnswerTop().getAnswerID());
+                    mAnswerBottom.setText(mStorySelected.getAnswerBottom().getAnswerID());
+                }
+            }
+        });
+
+        mAnswerBottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mStorySelected = mStorySelected.getAnswerTop().getChildStory();
+                mStoryTextView.setText(mStorySelected.getStoryID());
+                if (mStorySelected.getAnswerTop()==null){
+                    mAnswerTop.setVisibility(View.GONE);
+                    mAnswerBottom.setVisibility(View.GONE);
+                } else {
+                    mAnswerTop.setText(mStorySelected.getAnswerTop().getAnswerID());
+                    mAnswerBottom.setText(mStorySelected.getAnswerBottom().getAnswerID());
+                }
+            }
+        });
         // TODO: Coloque o evento do click do botão, caso precise colocar a visibilidade no botão invisivel utilize a função
         // do botão setVisibility(View.GONE):
 
 
     }
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putInt("StoryKey",mStoryIndex);
 
+
+
+ }
 }
